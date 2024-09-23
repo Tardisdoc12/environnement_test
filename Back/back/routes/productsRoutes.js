@@ -71,8 +71,9 @@ router.delete('/delete', async (req, res) => {
 
 // Route pour mettre à jour un produit par ID
 router.put('/update/:id', async (req, res) => {
+    const data = req.body
     try {
-        const result = await productsService.updateProductById(req.params.id);
+        const result = await productsService.updateProductById(req.params.id, data);
         res.status(200).json({ message: 'Product mis à jour' });
         if (result) {
         } else {

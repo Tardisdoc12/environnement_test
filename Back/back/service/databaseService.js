@@ -11,8 +11,6 @@ async function createDatabase(pool) {
     return pool;
 }
 
-
-
 const checkConnection = async (connection) => {
     connection.connect((err) => {
         if (err) {
@@ -23,9 +21,7 @@ const checkConnection = async (connection) => {
     });
 }
 
-
 async function checkCreatedDb() {
-
     const connection = await mysql.createConnection({
         host: process.env.DB_HOST,
         user: process.env.DB_USER,

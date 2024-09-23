@@ -36,10 +36,24 @@ const deteleProducts = async () => {
     return  pool.query('DELETE FROM products')
 };
 
-const updateProductById = async (id, name, value) => {
- const pool = await dbService.checkCreatedDb();
+const updateProductById = async (id, data) => {
+    const pool = await dbService.checkCreatedDb();
 
-    return  pool.query('UPDATE products SET ? = ? WHERE id = ?',[name, value, id])
+    let SQL = `UPDATE products SET`
+    const arrayData = Object.entries(data)
+
+    let SQLSet = [];
+    let values = [];
+
+    arrayData.forEach(element => {
+        SQLSet.push(element[0] + '= ?');
+        values.push(element[1])
+    })
+    
+    SQL = `${SQL} ${SQLSet.join(', ')} WHERE id = ?`;
+    values.push(id)
+
+    return pool.query(SQL,values)
 };
 
 module.exports = {
