@@ -1,9 +1,10 @@
  const dbService = require("./databaseService");
 
-const pool = dbService.checkCreatedDb();
-
-// Fonction pour récupérer tous les products
-const getProducts = async () => {
+ 
+ // Fonction pour récupérer tous les products
+ const getProducts = async () => {
+    const pool = await dbService.checkCreatedDb();
+    // console.log('getProducts', pool);
     return await pool.query('SELECT * FROM products');
 };
 

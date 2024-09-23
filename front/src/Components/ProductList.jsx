@@ -7,62 +7,35 @@ export const ProductList = () => {
 
     const { register, handleSubmit } = useForm()
 
-    const [products, setProducts] = useState([
-        {
-            id: 1,
-            name: 'product 1',
-            description: 'description 1',
-            price: 100,
-            quantity: 10
-        },
-        {
-            id: 2,
-            name: 'product 2',
-            description: 'description 2',
-            price: 200,
-            quantity: 2
-        }
-    ])
+    const [products, setProducts] = useState([])
 
     const [isAddingProduct, setIsAddingProduct] = useState(false)
 
     const handleAddProduct = async (data) => {
-        // try {
-        //     const response = await fetch(`http://localhost:3000/products`, {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({
-        //             name: data.name,
-        //             description: data.description,
-        //             price: data.price,
-        //             quantity: data.quantity
-        //         })
-        //     })
-        //     if (response.ok) {
-        //         console.log('product added')
-        //         toast.success('Product added')
-        //         setIsAddingProduct(false)
-        //     } else {
-        //         toast.error('Error adding product')
-        //         console.error('error adding product')
-        //     }
-        // } catch (err) {
-        //     console.error('error adding product', err)
-        // }
-
-        const newProduct = {
-            id: products.length + 1,
-            name: data.name,
-            description: data.description,
-            price: data.price,
-            quantity: data.quantity
+        try {
+            const response = await fetch(`http://localhost:3000/products`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: data.name,
+                    description: data.description,
+                    price: data.price,
+                    quantity: data.quantity
+                })
+            })
+            if (response.ok) {
+                console.log('product added')
+                toast.success('Product added')
+                setIsAddingProduct(false)
+            } else {
+                toast.error('Error adding product')
+                console.error('error adding product')
+            }
+        } catch (err) {
+            console.error('error adding product', err)
         }
-
-        setProducts([...products, newProduct])
-        toast.success('Product added')
-        setIsAddingProduct(false)
     }
 
     useEffect(() => {

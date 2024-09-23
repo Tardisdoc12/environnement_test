@@ -6,8 +6,12 @@ const productsService = require('../service/productsService');
 router.get('/', async (req, res) => {
     try {
         const products = await productsService.getProducts();
+        if(!products) {
+            res.status(404).json({ message: 'Products non trouvés' });
+        }
         res.json(products);
     } catch (error) {
+        console.error('Error get products', error)
         res.status(500).json({ message: 'Erreur lors de la récupération des products' });
     }
 });
