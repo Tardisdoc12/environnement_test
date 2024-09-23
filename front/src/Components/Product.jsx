@@ -14,7 +14,7 @@ export const Product = ({ productInfo, }) => {
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/products/${productInfo.id}`, {
+            const response = await fetch(`http://localhost:3000/api/products/${productInfo.id}`, {
                 method: 'DELETE'
             })
             if (response.ok) {
@@ -29,7 +29,7 @@ export const Product = ({ productInfo, }) => {
 
     const handleEdit = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/products/${productInfo.id}`, {
+            const response = await fetch(`http://localhost:3000/api/products/${productInfo.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
