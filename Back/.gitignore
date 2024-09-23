@@ -1,2 +1,4 @@
-Back/node_modules
-Back/node_modules/*
+node_modules
+node_modules/*
+package-lock.json
+.env
