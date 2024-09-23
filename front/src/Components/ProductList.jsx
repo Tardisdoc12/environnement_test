@@ -12,8 +12,9 @@ export const ProductList = () => {
     const [isAddingProduct, setIsAddingProduct] = useState(false)
 
     const handleAddProduct = async (data) => {
+        console.log(data)
         try {
-            const response = await fetch(`http://localhost:3000/products`, {
+            const response = await fetch(`http://localhost:3000/api/products/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -21,8 +22,8 @@ export const ProductList = () => {
                 body: JSON.stringify({
                     name: data.name,
                     description: data.description,
-                    price: data.price,
-                    quantity: data.quantity
+                    price: parseInt(data.price),
+                    quantity: parseInt(data.quantity)
                 })
             })
             if (response.ok) {

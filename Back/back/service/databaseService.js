@@ -1,4 +1,4 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 require('dotenv').config();
 
 async function createDatabase(pool) {
@@ -11,50 +11,29 @@ async function createDatabase(pool) {
     return pool;
 }
 
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-})
+
+
+const checkConnection = async (connection) => {
+    connection.connect((err) => {
+        if (err) {
+            console.error('error connecting: ' + err.stack);
+            return;
+        }
+        console.log('connected as id ' + connection.threadId);
+    });
+}
 
 
 async function checkCreatedDb() {
 
-    try {
-        const con = await connection.connect()
-        if(con) {
-            console.log('Connected to the database')
-        } else {
-            console.log('creating')
-            await createDatabase(con)
+    const connection = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    })
 
-            await createTables(con)
-        }
-    } catch(err) {
-        console.error('Error connecting to the database', err)
-    }
-
-    // try {
-    //     pool = mysql.createPool({
-    //         host: 'localhost',
-    //         user: 'root',
-    //         password:'root',
-    //         database:  'FinTech',
-    //     });
-    // } catch (error) {
-    //     pool = mysql.createPool({
-    //         host: 'localhost',
-    //         user: 'root',
-    //         password:'root',
-    //     });
-
-    //     pool = await createDatabase(pool)
-
-    //     await createTables()
-        
-    // }
-
-    // return pool;
+    return connection
 }
 
 async function createTables(connection) {
@@ -63,10 +42,13 @@ async function createTables(connection) {
         price INT,
         quantity INT,
         name VARCHAR (255),
-        description VARCHAR (255),
+        description VARCHAR (255)
       )`);
 }
 
 module.exports = {
-    checkCreatedDb
+    checkCreatedDb,
+    createDatabase,
+    createTables,
+    checkConnection
 }

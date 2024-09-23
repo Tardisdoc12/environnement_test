@@ -35,11 +35,7 @@ router.post('/add', async (req, res) => {
     const {price, quantity, name, description} = req.body
     try {
         const resutl = await productsService.addProduct(price, quantity, name, description);
-        if (resutl) {
-            res.status(200).json({ message: 'Product ajouté' });
-        } else {
-            res.status(404).json({ message: 'Product non trouvé' });
-        }
+        res.status(200).json({ message: 'Product ajouté' });
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la récupération du product' });
     }
@@ -77,8 +73,8 @@ router.delete('/delete', async (req, res) => {
 router.put('/update/:id', async (req, res) => {
     try {
         const result = await productsService.updateProductById(req.params.id);
+        res.status(200).json({ message: 'Product mis à jour' });
         if (result) {
-            res.status(200).json({ message: 'Product mis à jour' });
         } else {
             res.status(404).json({ message: 'Product non trouvé' });
         }
