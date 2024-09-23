@@ -7,8 +7,6 @@ export const ProductList = () => {
 
     const { register, handleSubmit } = useForm()
 
-    const update = useState(false)
-
     const [products, setProducts] = useState([
         {
             id: 1,
@@ -63,7 +61,6 @@ export const ProductList = () => {
         }
 
         setProducts([...products, newProduct])
-        update(true)
         toast.success('Product added')
         setIsAddingProduct(false)
     }
@@ -80,7 +77,7 @@ export const ProductList = () => {
         }
 
         fetchData()
-    }, [update])
+    }, [])
 
     return (
         <>
@@ -96,7 +93,7 @@ export const ProductList = () => {
                 </form>
             )}
             {products.map((product, index) => (
-                <Product key={index} productInfo={product} update={update} />
+                <Product key={index} productInfo={product} />
             ))}
         </>
     )

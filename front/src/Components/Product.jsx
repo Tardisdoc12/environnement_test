@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 
-export const Product = ({ productInfo, update }) => {
+export const Product = ({ productInfo, }) => {
 
     const [product, setProduct] = useState({
         name: productInfo.name,
@@ -19,7 +19,6 @@ export const Product = ({ productInfo, update }) => {
             })
             if (response.ok) {
                 console.log('product deleted')
-                update(true)
             } else {
                 console.error('error deleting product')
             }
@@ -43,7 +42,6 @@ export const Product = ({ productInfo, update }) => {
             })
             if (response.ok) {
                 console.log('product updated')
-                update(true)
             } else {
                 console.error('error updating product')
             }
@@ -59,8 +57,8 @@ export const Product = ({ productInfo, update }) => {
                 <>
                     <input type='text' value={product.name} />
                     <input type='text' value={product.description} />
-                    <input type='text' value={product.price} />
-                    <input type='text' value={product.quantity} />
+                    <input type='number' value={product.price} />
+                    <input type='number' value={product.quantity} />
                     <div>
                         <input type='button' value={"Save"} onClick={handleEdit} />
                         <input type='button' value={"Cancel"} onClick={() => setIsEditing(!isEditing)} />
@@ -85,5 +83,4 @@ export const Product = ({ productInfo, update }) => {
 
 Product.propTypes = {
     productInfo: PropTypes.object.isRequired,
-    update: PropTypes.func.isRequired
 }
