@@ -15,11 +15,17 @@ pipeline {
                 dir('Back'){
                     bat 'npm install'
                 }
+                dir('Front'){
+                    bat 'npm install'
+                }
             }
         }
         stage('Test') {
            steps {
                dir('Back'){
+                    bat 'npm test'
+               }
+               dir('Front'){
                     bat 'npm test'
                }
             }
