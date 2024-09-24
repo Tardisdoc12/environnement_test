@@ -6,13 +6,12 @@ const productsService = require('../service/productsService');
 router.get('/', async (req, res) => {
     try {
         const products = await productsService.getProducts();
-        if(!products) {
-            res.status(404).json({ message: 'Products non trouvés' });
+        if(!products || products.length === 0) {
+            return res.status(404).json({ message: 'Products non trouvés' });
         }
-        res.json(products);
+        return res.json(products);
     } catch (error) {
-        console.error('Error get products', error)
-        res.status(500).json({ message: 'Erreur lors de la récupération des products' });
+        return res.status(500).json({ message: 'Erreur lors de la récupération des products' });
     }
 });
 
@@ -21,12 +20,12 @@ router.get('/:id', async (req, res) => {
     try {
         const product = await productsService.getProductsById(req.params.id);
         if (product) {
-            res.json(product);
+            return res.json(product);
         } else {
-            res.status(404).json({ message: 'Product non trouvé' });
+            return res.status(404).json({ message: 'Product non trouvé' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la récupération du product' });
+        return res.status(500).json({ message: 'Erreur lors de la récupération du product' });
     }
 });
 
@@ -35,9 +34,9 @@ router.post('/add', async (req, res) => {
     const {price, quantity, name, description} = req.body
     try {
         const resutl = await productsService.addProduct(price, quantity, name, description);
-        res.status(200).json({ message: 'Product ajouté' });
+        return res.status(200).json({ message: 'Product ajouté' });
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la récupération du product' });
+        return res.status(500).json({ message: 'Erreur lors de la récupération du product' });
     }
 });
 
@@ -46,12 +45,12 @@ router.delete('/delete/:id', async (req, res) => {
     try {
         const result = await productsService.deteleProductById(req.params.id);
         if (result) {
-            res.status(200).json({ message: 'Product supprimé' });
+            return res.status(200).json({ message: 'Product supprimé' });
         } else {
-            res.status(404).json({ message: 'Product non trouvé' });
+            return res.status(404).json({ message: 'Product non trouvé' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la récupération du product' });
+        return res.status(500).json({ message: 'Erreur lors de la récupération du product' });
     }
 });
 
@@ -60,12 +59,12 @@ router.delete('/delete', async (req, res) => {
     try {
         const result = await productsService.deteleProducts();
         if (result) {
-            res.status(200).json({ message: 'Products supprimés' });
+            return res.status(200).json({ message: 'Products supprimés' });
         } else {
-            res.status(404).json({ message: 'Products non trouvés' });
+            return res.status(404).json({ message: 'Products non trouvés' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la récupération du product' });
+        return res.status(500).json({ message: 'Erreur lors de la récupération du product' });
     }
 });
 
@@ -74,13 +73,13 @@ router.put('/update/:id', async (req, res) => {
     const data = req.body
     try {
         const result = await productsService.updateProductById(req.params.id, data);
-        res.status(200).json({ message: 'Product mis à jour' });
+        return res.status(200).json({ message: 'Product mis à jour' });
         if (result) {
         } else {
-            res.status(404).json({ message: 'Product non trouvé' });
+            return res.status(404).json({ message: 'Product non trouvé' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la récupération du product' });
+        return res.status(500).json({ message: 'Erreur lors de la récupération du product' });
     }
 });
 

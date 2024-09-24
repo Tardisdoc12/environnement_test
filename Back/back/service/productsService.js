@@ -7,7 +7,6 @@
  const pool = await dbService.checkCreatedDb();
 
     const response = await pool.query('SELECT * FROM products');
-
     return response[0]
 };
 
