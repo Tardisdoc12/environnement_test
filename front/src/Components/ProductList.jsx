@@ -11,6 +11,8 @@ export const ProductList = () => {
 
     const [isAddingProduct, setIsAddingProduct] = useState(false)
 
+    const [modificationCount, setModificationCount] = useState(0)
+
     const handleAddProduct = async (data) => {
         console.log(data)
         try {
@@ -29,6 +31,7 @@ export const ProductList = () => {
             if (response.ok) {
                 console.log('product added')
                 toast.success('Product added')
+                setProducts([...products, data])
                 setIsAddingProduct(false)
             } else {
                 toast.error('Error adding product')
@@ -44,6 +47,7 @@ export const ProductList = () => {
             try {
                 const response = await fetch(`http://localhost:3000/api/products`)
                 const data = await response.json()
+                console.log(data)
                 setProducts(data)
             } catch (err) {
                 console.error('error fetching product', err)
@@ -51,7 +55,15 @@ export const ProductList = () => {
         }
 
         fetchData()
-    }, [])
+    }, [modificationCount])
+
+    const handleEditProduct = async () => {
+        setModificationCount(modificationCount + 1)
+    }
+
+    const handleDeleteProduct = async () => {
+        setModificationCount(modificationCount + 1)
+    }
 
     return (
         <>
@@ -67,7 +79,12 @@ export const ProductList = () => {
                 </form>
             )}
             {products.map((product, index) => (
-                <Product key={index} productInfo={product} />
+                <Product
+                    key={index}
+                    productInfo={product}
+                    onEdit={handleEditProduct}
+                    onDelete={handleDeleteProduct}
+                />
             ))}
         </>
     )
