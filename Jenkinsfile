@@ -12,6 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                bat 'cd Back'
                 bat 'npm install'
             }
         }
