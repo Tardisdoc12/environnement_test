@@ -21,7 +21,8 @@ const getProductsById = async (id) => {
 const addProduct = async (price, quantity, name, description) => {
  const pool = await dbService.checkCreatedDb();
 
-    return pool.query(`INSERT INTO products (price, quantity, name, description) VALUES (?,?,?,?)`, [price, quantity, name, description])[0];
+ const result = await pool.query(`INSERT INTO products (price, quantity, name, description) VALUES (?,?,?,?)`, [price, quantity, name, description]);
+ return result[0];
 };
 
 const deteleProductById = async (id) => {
@@ -33,7 +34,7 @@ const deteleProductById = async (id) => {
 const deteleProducts = async () => {
  const pool = await dbService.checkCreatedDb();
 
-    return  pool.query('DELETE FROM products')
+    return pool.query('DELETE FROM products')
 };
 
 const updateProductById = async (id, data) => {
