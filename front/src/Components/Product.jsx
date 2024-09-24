@@ -1,86 +1,101 @@
-import PropTypes from 'prop-types'
-import { useState } from 'react'
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 
-export const Product = ({ productInfo, }) => {
-
+export const Product = ({ productInfo, onEdit, onDelete }) => {
     const [product, setProduct] = useState({
         name: productInfo.name,
         description: productInfo.description,
         price: productInfo.price,
         quantity: productInfo.quantity
-    })
+    });
 
-    const [isEditing, setIsEditing] = useState(false)
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/products/${productInfo.id}`, {
+            const response = await fetch(`http://localhost:3000/api/products/delete/${productInfo.id}`, {
                 method: 'DELETE'
-            })
+            });
             if (response.ok) {
-                console.log('product deleted')
+                console.log('product deleted');
+                onDelete(productInfo.id); // Appeler onDelete après suppression
             } else {
-                console.error('error deleting product')
+                console.error('error deleting product');
             }
         } catch (err) {
-            console.error('error deleting product', err)
+            console.error('error deleting product', err);
         }
-    }
+    };
 
     const handleEdit = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/products/${productInfo.id}`, {
+            const response = await fetch(`http://localhost:3000/api/products/update/${productInfo.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    name: 'new name',
-                    description: 'new description',
-                    price: 100
-                })
-            })
+                body: JSON.stringify(product)
+            });
             if (response.ok) {
-                console.log('product updated')
+                console.log('product edited');
+                onEdit(productInfo.id, product); // Appeler onEdit après édition
             } else {
-                console.error('error updating product')
+                console.error('error editing product');
             }
         } catch (err) {
-            console.error('error updating product', err)
+            console.error('error editing product', err);
         }
-    }
-
+    };
 
     return (
         <div>
             {isEditing ? (
-                <>
-                    <input type='text' value={product.name} />
-                    <input type='text' value={product.description} />
-                    <input type='number' value={product.price} />
-                    <input type='number' value={product.quantity} />
-                    <div>
-                        <input type='button' value={"Save"} onClick={handleEdit} />
-                        <input type='button' value={"Cancel"} onClick={() => setIsEditing(!isEditing)} />
-                    </div>
-                </>
+                <div>
+                    <input
+                        type="text"
+                        value={product.name}
+                        onChange={(e) => setProduct({ ...product, name: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        value={product.description}
+                        onChange={(e) => setProduct({ ...product, description: e.target.value })}
+                    />
+                    <input
+                        type="number"
+                        value={product.price}
+                        onChange={(e) => setProduct({ ...product, price: e.target.value })}
+                    />
+                    <input
+                        type="number"
+                        value={product.quantity}
+                        onChange={(e) => setProduct({ ...product, quantity: e.target.value })}
+                    />
+                    <button onClick={handleEdit}>Save</button>
+                    <button onClick={() => setIsEditing(false)}>Cancel</button>
+                </div>
             ) : (
-                <>
-                    <p>{productInfo.name}</p>
-                    <p>{productInfo.description}</p>
-                    <p>{productInfo.price}</p>
-                    <p>{productInfo.quantity}</p>
-                    <div>
-                        <input type='button' value={"Edit"} onClick={() => setIsEditing(!isEditing)} />
-                        <input type='button' value={"Delete"} onClick={handleDelete} />
-                    </div>
-                </>
+                <div>
+                    <h3>{product.name}</h3>
+                    <p>{product.description}</p>
+                    <p>{product.price}</p>
+                    <p>{product.quantity}</p>
+                    <button onClick={() => setIsEditing(true)}>Edit</button>
+                    <button onClick={handleDelete}>Delete</button>
+                </div>
             )}
-
         </div>
-    )
-}
+    );
+};
 
 Product.propTypes = {
-    productInfo: PropTypes.object.isRequired,
-}
+    productInfo: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        quantity: PropTypes.number.isRequired
+    }).isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired
+};
