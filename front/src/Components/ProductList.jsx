@@ -57,11 +57,20 @@ export const ProductList = () => {
         fetchData()
     }, [modificationCount])
 
-    const handleEditProduct = async () => {
+    const handleEditProduct = async (productID, product) => {
+        const newProducts = products.map((p) => {
+            if (p.id === productID) {
+                return product
+            }
+            return p
+        })
+        setProducts(newProducts)
         setModificationCount(modificationCount + 1)
     }
 
-    const handleDeleteProduct = async () => {
+    const handleDeleteProduct = async (productId) => {
+        const newProducts = products.filter((product) => product.id !== productId)
+        setProducts(newProducts)
         setModificationCount(modificationCount + 1)
     }
 
