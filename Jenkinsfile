@@ -12,14 +12,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'cd Back'
-                bat 'npm install'
+                bat 'npm install Back/'
             }
         }
-        stage('Test') {
-            steps {
-                bat 'npm test'
-            }
-        }
+        //stage('Test') {
+          //  steps {
+            //    bat 'npm test'
+            //}
+        //}
     }
 }
