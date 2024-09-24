@@ -1,4 +1,4 @@
-// Tests Unitaires :
+// Tests Unitaires BDD :
 
 // Products
 
@@ -85,7 +85,5 @@ describe('Products Service Tests', () => {
     );
     expect(result).toEqual({ affectedRows: 1 });
   });
-  
-  
 
 });
