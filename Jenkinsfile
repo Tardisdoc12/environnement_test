@@ -22,9 +22,9 @@ pipeline {
         stage('Test') {
             steps {
                 if (isUnix()) {
-                    sh 'npm install'
+                    sh 'npm test'
                 } else {
-                    bat 'npm install'
+                    bat 'npm test'
                 }
             }
         }
