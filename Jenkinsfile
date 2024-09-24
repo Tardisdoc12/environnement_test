@@ -12,8 +12,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'cd "C:/ProgramData/Jenkins/.jenkins/workspace/FinTech/Back/'
-                bat 'npm install'
+                bat 'npm install Back/'
             }
         }
         stage('Test') {
