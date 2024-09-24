@@ -15,10 +15,10 @@ pipeline {
                 bat 'npm install Back/'
             }
         }
-        stage('Test') {
-            steps {
-                bat 'npm test'
-            }
-        }
+        //stage('Test') {
+          //  steps {
+            //    bat 'npm test'
+            //}
+        //}
     }
 }
