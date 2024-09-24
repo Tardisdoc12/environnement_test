@@ -87,9 +87,9 @@ export const ProductList = () => {
                     <input type='submit' value={"Add"} />
                 </form>
             )}
-            {products.map((product, index) => (
+            {products.map((product) => (
                 <Product
-                    key={index}
+                    key={product.id}
                     productInfo={product}
                     onEdit={handleEditProduct}
                     onDelete={handleDeleteProduct}
