@@ -51,3 +51,5 @@ app.use('/api/products', productsRoutes);
 app.listen(port, () => {
     console.log(`Serveur en écoute sur http://localhost:${port}`);
 });
+
+// TEST JENKINS
