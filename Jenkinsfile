@@ -12,20 +12,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                if (isUnix()) {
-                    sh 'npm install'
-                } else {
-                    bat 'npm install'
-                }
+                bat 'npm install'
             }
         }
         stage('Test') {
             steps {
-                if (isUnix()) {
-                    sh 'npm test'
-                } else {
-                    bat 'npm test'
-                }
+                bat 'npm test'
             }
         }
     }
