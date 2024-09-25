@@ -32,11 +32,11 @@ pipeline {
         }
         stage('Start') {
             steps {
-                dir('Back'){
-                    bat 'node back'
-                }
                 dir('front'){
                     bat 'npm run dev'
+                }
+                dir('Back'){
+                    bat 'node back'
                 }
             }
         }
