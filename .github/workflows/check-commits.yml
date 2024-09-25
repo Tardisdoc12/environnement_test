@@ -1,0 +1,47 @@
+name: Link Commits to Mantis
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  link-commits:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Extract commit messages
+      run: |
+        # Extract all commits from the push
+        commits=$(git log origin/main..HEAD --format="%H")
+        
+        for commit in $commits; do
+          message=$(git log --format=%B -n 1 $commit)
+          echo "Commit: $commit, Message: $message"
+        
+          # Extract the bug number using regex
+          if [[ "$message" =~ bug[[:space:]]([0-9]+): ]]; then
+            bug_number="${BASH_REMATCH[1]}"
+            echo "Bug Number: $bug_number"
+        
+            # Send a request to Mantis to link the commit to the bug
+            response=$(curl -X POST "https://be5d-90-17-92-23.ngrok-free.app/mantisbt/api/rest/issues/$bug_number/notes" \
+              -H "Authorization: ***" \
+              -H "Content-Type: application/json" \
+              -d "{
+                    \"text\": \"Commit $commit linked to this bug. Message: $message\",
+                    \"view_state\": {
+                      \"id\": 10
+                    }
+                  }")
+        
+            echo "Response: $response"
+          else
+            echo "No bug number found in commit message: $message"
+          fi
+        done
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
