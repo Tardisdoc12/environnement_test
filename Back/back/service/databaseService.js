@@ -35,9 +35,9 @@ async function checkCreatedDb() {
 async function createTables(connection) {
     await connection.query(`CREATE TABLE IF NOT EXISTS products (
         id INT PRIMARY KEY AUTO_INCREMENT,
-        price INT,
-        quantity INT,
-        name VARCHAR (255),
+        price INT NOT NULL,
+        quantity INT NOT NULL,
+        name VARCHAR (255) NOT NULL,
         description VARCHAR (255)
       )`);
 }

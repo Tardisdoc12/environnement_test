@@ -11,15 +11,20 @@ app.use(cors({
 }))
 
 async function initializeDatabase() {
-    const connection = await mysql.createConnection({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME
-    })
-
     try {
+        const connection = await mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME
+        })
         await databaseService.checkConnection(connection)
+    } catch(err) {
+        const connection = await mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+        })
         try {
             await databaseService.createDatabase(connection)
             try {
@@ -27,11 +32,10 @@ async function initializeDatabase() {
             } catch(err) {
                 console.error('error creating tables', err)
             }
-        } catch(err) {
-            console.error('error creating db', err)
+        } catch (error) {
+            console.error('error checking connection', err)
+
         }
-    } catch(err) {
-        console.error('error checking connection', err)
     }
 }
 
