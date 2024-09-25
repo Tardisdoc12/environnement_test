@@ -26,7 +26,7 @@ jobs:
             echo "Bug Number: $bug_number"
             
             # Send a request to Mantis to link the commit to the bug
-            curl -X POST "https://your-mantis-url/api/rest/issues/$bug_number/notes" \
+            curl -X POST "https://be5d-90-17-92-23.ngrok-free.app/mantisbt/api/rest/issues/$bug_number/notes" \
               -H "Authorization: Bearer ${{ secrets.MANTIS_API_TOKEN }}" \
               -H "Content-Type: application/json" \
               -d "{
