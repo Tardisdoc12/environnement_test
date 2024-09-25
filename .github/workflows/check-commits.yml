@@ -1,0 +1,23 @@
+name: Check Commit Messages
+
+on: [push]
+
+jobs:
+  check-commit-message:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Validate Commit Messages
+      run: |
+        # Check all commits for the 'bug <number>: ' pattern
+        commits=$(git log --pretty="%H" origin/main..HEAD)
+        for commit in $commits; do
+          message=$(git log --format=%B -n 1 $commit)
+          if ! grep -qE '^Bug [0-9]+: ' <<< "$message"; then
+            echo "Invalid commit message: $message"
+            exit 1
+          fi
+        done
