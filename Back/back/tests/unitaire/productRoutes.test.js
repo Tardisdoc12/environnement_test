@@ -106,6 +106,23 @@ describe('Products Routes', () => {
         expect(response.status).toBe(404);
     });
 
+    test('should validate inputs', async () => {
+        // Essayer de soumettre un prix négatif
+        const invalidProductData = {
+            price: -100, // Prix non valide
+            quantity: 50,
+            name: 'Product Test',
+            description: 'Test description',
+        };
+
+        const response = await request(app)
+            .post('/api/products/add')
+            .send(invalidProductData);
+
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBe('Le prix doit être suppérieur à 0');
+    });
+
 
     // /products/delete/:id **************************************************************
     test('should delete a product by ID', async () => {

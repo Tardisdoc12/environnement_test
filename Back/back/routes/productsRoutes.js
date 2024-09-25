@@ -35,6 +35,11 @@ router.post('/add', async (req, res) => {
     if (price === undefined || quantity === undefined || name === undefined || description === undefined) {
         return res.status(404).json({ message: "erreur de db" })
     }
+    if (price < 0) {
+        console.log(price)
+        return res.status(404).json({ message: "Le prix doit être suppérieur à 0" })
+    }
+
     try {
         const resutl = await productsService.addProduct(price, quantity, name, description);
         return res.status(200).json({ message: 'Product ajouté' });
@@ -80,7 +85,7 @@ router.put('/update/:id', async (req, res) => {
         if (verif === undefined) {
             return res.status(404).json({ message: 'Product non trouvé' }); 
         }
-        
+
         await productsService.updateProductById(req.params.id, data);
         return res.status(200).json({ message: 'Product mis à jour' });
 
