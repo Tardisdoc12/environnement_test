@@ -30,15 +30,5 @@ pipeline {
                }
             }
         }
-        stage('Start') {
-            steps {
-                dir('front'){
-                    bat 'npm run dev'
-                }
-                dir('Back'){
-                    bat 'node back'
-                }
-            }
-        }
     }
 }
