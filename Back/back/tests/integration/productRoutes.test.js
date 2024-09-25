@@ -1,6 +1,6 @@
 // Tests Integration / Routes :
 
-// Products
+// Products //
 
 const request = require('supertest');
 const express = require('express');
@@ -17,7 +17,7 @@ jest.mock('../../service/databaseService', () => ({
   }));
 
   describe('Products Routes Intergation Test', () => { 
-    
+
     test('should get all products', async () => {
         const mockPool = { // Objet pool avec une méthode query
             query: 
