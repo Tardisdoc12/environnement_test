@@ -2,11 +2,11 @@
 
 // Products
 
-const productsService = require('../service/productsService');
-const dbService = require('../service/databaseService');
+const productsService = require('../../service/productsService');
+const dbService = require('../../service/databaseService');
 
 // Mock de la fonction checkCreatedDb pour éviter de dépendre de la base de données
-jest.mock('../service/databaseService', () => ({
+jest.mock('../../service/databaseService', () => ({
   checkCreatedDb: jest.fn(), // jest.fn() => mock la base de données
 }));
 

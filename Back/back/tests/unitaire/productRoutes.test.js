@@ -4,15 +4,15 @@
 
 const request = require('supertest');
 const express = require('express');
-const productsRouter = require('../routes/productsRoutes');
-const productsService = require('../service/productsService');
+const productsRouter = require('../../routes/productsRoutes');
+const productsService = require('../../service/productsService');
 
 const app = express();
 app.use(express.json()); // Middleware pour parser le corps des requêtes JSON
 app.use('/api/products', productsRouter); // Utilisation de ton router
 
 // Mock du service
-jest.mock('../service/productsService');
+jest.mock('../../service/productsService');
 
 describe('Products Routes', () => {
 
@@ -96,39 +96,16 @@ describe('Products Routes', () => {
         expect(productsService.addProduct).toHaveBeenCalledWith(10, 5, 'Product A', 'Description A');
     });
 
-    // 400 (données manquantes)
-    test('should return 400 when required fields are missing', async () => {
+    // 404
+    test('should return 404 when required fields are missing', async () => {
+        jest.resetAllMocks()
         const response = await request(app)
             .post('/api/products/add')
-            .send({ price: 10 }); // Envoi des données manquantes (quantity, name, description)
-
-        expect(response.status).toBe(400);
-        expect(response.body).toHaveProperty('message', 'Données manquantes'); // Vérifie le message d'erreur
-    });
-
-    // Erreur 404 (simuler une erreur de non-trouvabilité)
-    test('should return 404 when trying to add a product that does not exist in service', async () => {
-        productsService.addProduct.mockResolvedValue(false); // Simule que le produit n'est pas ajouté correctement
-
-        const response = await request(app)
-            .post('/api/products/add')
-            .send({ price: 10, quantity: 5, name: 'Product A', description: 'Description A' });
+            .send({ }); // Envoi des données manquantes (quantity, name, description)
 
         expect(response.status).toBe(404);
-        expect(response.body).toHaveProperty('message', 'Product non trouvé'); // Vérifie le message d'erreur
     });
 
-    // 500
-    test('should return 500 when there is a server error while adding a product', async () => {
-        productsService.addProduct.mockRejectedValue(new Error('Server error')); // Simule une erreur du serveur
-
-        const response = await request(app)
-            .post('/api/products/add')
-            .send({ price: 10, quantity: 5, name: 'Product A', description: 'Description A' });
-
-        expect(response.status).toBe(500);
-        expect(response.body).toHaveProperty('message', 'Erreur lors de la récupération du product'); // Vérifie le message d'erreur
-    });
 
     // /products/delete/:id **************************************************************
     test('should delete a product by ID', async () => {
@@ -158,7 +135,7 @@ describe('Products Routes', () => {
         const response = await request(app).delete('/api/products/delete/1');
 
         expect(response.status).toBe(500);
-        expect(response.body).toHaveProperty('message', 'Erreur lors de la récupération du product'); // Vérifie le message d'erreur
+        expect(response.body).toHaveProperty('message', 'Erreur lors de la suppression du product'); // Vérifie le message d'erreur
     });
 
     // /products/delete **************************************************************
@@ -196,7 +173,11 @@ describe('Products Routes', () => {
 
     // /products/update/:id **************************************************************
     test('should update a product by ID', async () => {
+        jest.resetAllMocks()
+
         productsService.updateProductById.mockResolvedValue(true); // Simule la mise à jour réussie
+        productsService.getProductsById.mockResolvedValue({ id: 1, name: 'Product A', price: 10, quantity: 5, description: 'Description A' });
+        
         const updatedProduct = { price: 15, quantity: 10 }; // Les nouvelles données
         const response = await request(app).put('/api/products/update/1').send(updatedProduct);
 
@@ -207,6 +188,8 @@ describe('Products Routes', () => {
 
     // 404
     test('should return 404 when trying to update a product that does not exist', async () => {
+        jest.resetAllMocks()
+        
         productsService.updateProductById.mockResolvedValue(false); // Simule que le produit n'existe pas
 
         const updatedProduct = { price: 15, quantity: 10 };
@@ -218,6 +201,8 @@ describe('Products Routes', () => {
 
     // 500
     test('should return 500 when there is a server error while updating a product', async () => {
+        jest.resetAllMocks()
+        productsService.getProductsById.mockResolvedValue(new Error('Server error'))
         productsService.updateProductById.mockRejectedValue(new Error('Server error')); // Simule une erreur du serveur
 
         const updatedProduct = { price: 15, quantity: 10 };

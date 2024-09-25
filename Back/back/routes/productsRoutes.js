@@ -32,11 +32,14 @@ router.get('/:id', async (req, res) => {
 // Route pour ajouter un product
 router.post('/add', async (req, res) => {
     const {price, quantity, name, description} = req.body
+    if (price === undefined || quantity === undefined || name === undefined || description === undefined) {
+        return res.status(404).json({ message: "erreur de db" })
+    }
     try {
         const resutl = await productsService.addProduct(price, quantity, name, description);
         return res.status(200).json({ message: 'Product ajouté' });
     } catch (error) {
-        return res.status(500).json({ message: 'Erreur lors de la récupération du product' });
+        return res.status(500).json({ message: "erreur de db" });
     }
 });
 
@@ -50,7 +53,7 @@ router.delete('/delete/:id', async (req, res) => {
             return res.status(404).json({ message: 'Product non trouvé' });
         }
     } catch (error) {
-        return res.status(500).json({ message: 'Erreur lors de la récupération du product' });
+        return res.status(500).json({ message: 'Erreur lors de la suppression du product' });
     }
 });
 
@@ -64,7 +67,7 @@ router.delete('/delete', async (req, res) => {
             return res.status(404).json({ message: 'Products non trouvés' });
         }
     } catch (error) {
-        return res.status(500).json({ message: 'Erreur lors de la récupération du product' });
+        return res.status(500).json({ message: 'Erreur lors de la suppression des products' });
     }
 });
 
@@ -72,14 +75,18 @@ router.delete('/delete', async (req, res) => {
 router.put('/update/:id', async (req, res) => {
     const data = req.body
     try {
-        const result = await productsService.updateProductById(req.params.id, data);
-        return res.status(200).json({ message: 'Product mis à jour' });
-        if (result) {
-        } else {
-            return res.status(404).json({ message: 'Product non trouvé' });
+        const verif = await productsService.getProductsById(req.params.id)
+        
+        if (verif === undefined) {
+            return res.status(404).json({ message: 'Product non trouvé' }); 
         }
+        
+        await productsService.updateProductById(req.params.id, data);
+        return res.status(200).json({ message: 'Product mis à jour' });
+
     } catch (error) {
         return res.status(500).json({ message: 'Erreur lors de la récupération du product' });
+
     }
 });
 
