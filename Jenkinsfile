@@ -15,7 +15,7 @@ pipeline {
                 dir('Back'){
                     bat 'npm install'
                 }
-                dir('Front'){
+                dir('front'){
                     bat 'npm install'
                 }
             }
@@ -25,7 +25,7 @@ pipeline {
                dir('Back'){
                     bat 'npm test'
                }
-               dir('Front'){
+               dir('front'){
                     bat 'npm test'
                }
             }
