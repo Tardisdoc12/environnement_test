@@ -63,7 +63,12 @@ export const ProductList = () => {
                 const response = await fetch(`http://localhost:3000/api/products`)
                 const data = await response.json()
                 console.log(data)
-                setProducts(data)
+                if (response.ok) {
+                    setProducts(data)
+                } else {
+                    console.error('error fetching product')
+                    setProducts([])
+                }
             } catch (err) {
                 console.error('error fetching product', err)
             }
@@ -125,7 +130,7 @@ export const ProductList = () => {
                     />
                 </form>
             )}
-            {products.map((product) => (
+            {products?.map((product) => (
                 <Product
                     key={product.id}
                     productInfo={product}
