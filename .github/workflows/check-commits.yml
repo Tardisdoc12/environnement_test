@@ -16,7 +16,7 @@ jobs:
         commits=$(git log --pretty="%H" origin/main..HEAD)
         for commit in $commits; do
           message=$(git log --format=%B -n 1 $commit)
-          if ! grep -qE '^Bug [0-9]+: ' <<< "$message"; then
+          if ! grep -qE '^bug [0-9]+: ' <<< "$message"; then
             echo "Invalid commit message: $message"
             exit 1
           fi
