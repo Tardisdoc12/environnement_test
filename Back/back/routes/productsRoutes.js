@@ -36,7 +36,6 @@ router.post('/add', async (req, res) => {
         return res.status(404).json({ message: "erreur de db" })
     }
     if (price < 0) {
-        console.log(price)
         return res.status(404).json({ message: "Le prix doit être suppérieur à 0" })
     }
 
