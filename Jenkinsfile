@@ -6,7 +6,7 @@ pipeline {
         DB_USER = credentials('db-user')
         DB_PASSWORD = credentials('db-password')
         DB_NAME = credentials('db-name')
-
+        API_URL = credentials('API_URL')
     }
 
     stages {
@@ -28,6 +28,16 @@ pipeline {
                dir('front'){
                     bat 'npm test'
                }
+            }
+        }
+        stage('Start') {
+            steps {
+                dir('Back'){
+                    bat 'node back'
+                }
+                dir('front'){
+                    bat 'npm run dev'
+                }
             }
         }
     }
