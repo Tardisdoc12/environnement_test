@@ -17,6 +17,17 @@ export const ProductList = () => {
     const [modificationCount, setModificationCount] = useState(0)
 
     const handleAddProduct = async (data) => {
+
+        const containsScriptName = /<script.*?>.*?<\/script>/.test(data.name);
+        const containsScriptDescription = /<script.*?>.*?<\/script>/.test(data.description);
+        const containsScriptPrice = /<script.*?>.*?<\/script>/.test(data.price);
+        const containsScriptQuantity = /<script.*?>.*?<\/script>/.test(data.quantity);
+
+        if (containsScriptName || containsScriptDescription || containsScriptPrice || containsScriptQuantity) {
+            toast.error('Invalid input detected');
+            return;
+        }
+
         console.log(data)
         if (!data.name || !data.description || !data.price || !data.quantity) {
             toast.error('All fields are required')
