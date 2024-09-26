@@ -7,6 +7,7 @@ pipeline {
         DB_PASSWORD = credentials('db-password')
         DB_NAME = credentials('db-name')
         API_URL = credentials('API_URL')
+        
     }
 
     stages {
