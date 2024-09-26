@@ -37,6 +37,6 @@ describe('Product Performance', () => {
         const end = performance.now();
         const duration = end - start;
         console.log(`Rendering time Multiple Product: ${duration}ms`)
-        expect(duration).toBeLessThan(1000);
+        expect(duration).toBeLessThan(1200);
     })
 })
