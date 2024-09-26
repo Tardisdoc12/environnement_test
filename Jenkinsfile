@@ -32,8 +32,10 @@ pipeline {
             }
         }
         stage('Lancement'){
-            dir('Back'){
-                bat 'npm back &'
+            steps{
+                dir('Back'){
+                    bat 'npm back &'
+                }
             }
         }
     }
