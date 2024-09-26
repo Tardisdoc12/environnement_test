@@ -34,7 +34,7 @@ pipeline {
         stage('Lancement'){
             steps{
                 dir('Back'){
-                    bat 'npm back &'
+                    bat 'node back &'
                 }
             }
         }
