@@ -31,12 +31,5 @@ pipeline {
                }
             }
         }
-        stage('Lancement'){
-            steps{
-                dir('Back'){
-                    bat 'node back &'
-                }
-            }
-        }
     }
 }
