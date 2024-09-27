@@ -1,3 +1,1 @@
 # environnement_test
-
-test
